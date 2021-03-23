@@ -34,4 +34,17 @@ public class TestController {
 		ResponseEntity<String> response = restTemplate.exchange(baseUrl+"fetchUser", HttpMethod.POST, request, String.class);
 		return response.getBody()+" footer";
 	}
+	
+	@GetMapping("/doTransaction")
+	public String transaction() {
+		RestTemplate restTemplate = restTemplateBuilder.build();
+		InstanceInfo instanceInfo = client.getNextServerFromEureka("service-first", false);
+		String baseUrl = instanceInfo.getHomePageUrl();
+		FetchUserRequestDto fetchUserRequestDto = new FetchUserRequestDto();
+		fetchUserRequestDto.setId(321);
+		HttpEntity<FetchUserRequestDto> request = new HttpEntity<FetchUserRequestDto>(fetchUserRequestDto);
+		ResponseEntity<String> response = restTemplate.exchange(baseUrl+"fetchUser", HttpMethod.POST, request, String.class);
+		ResponseEntity<String> response1 = restTemplate.exchange(baseUrl+"/test", HttpMethod.GET, null, String.class);
+		return response.getBody() + response1.getBody() +" footer";
+	}
 }
