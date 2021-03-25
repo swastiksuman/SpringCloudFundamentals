@@ -32,7 +32,7 @@ public class TestController {
 		fetchUserRequestDto.setId(321);
 		HttpEntity<FetchUserRequestDto> request = new HttpEntity<FetchUserRequestDto>(fetchUserRequestDto);
 		ResponseEntity<String> response = restTemplate.exchange(baseUrl+"fetchUser", HttpMethod.POST, request, String.class);
-		return response.getBody()+" footer";
+		return response.getBody();
 	}
 	
 	@GetMapping("/doTransaction")
