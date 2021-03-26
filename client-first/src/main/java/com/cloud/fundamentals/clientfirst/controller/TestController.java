@@ -5,6 +5,7 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
@@ -22,7 +23,7 @@ public class TestController {
 	@Autowired
 	private RestTemplateBuilder restTemplateBuilder;
 	
-	
+	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/")
 	public String testClient() {
 		RestTemplate restTemplate = restTemplateBuilder.build();
@@ -34,7 +35,7 @@ public class TestController {
 		ResponseEntity<String> response = restTemplate.exchange(baseUrl+"fetchUser", HttpMethod.POST, request, String.class);
 		return response.getBody();
 	}
-	
+	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/doTransaction")
 	public String transaction() {
 		RestTemplate restTemplate = restTemplateBuilder.build();
