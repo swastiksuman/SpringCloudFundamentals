@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
 import com.cloud.fundamentals.clientfirst.dto.FetchUserRequestDto;
+import com.cloud.fundamentals.clientfirst.model.Order;
+import com.cloud.fundamentals.clientfirst.service.RabbitMQSender;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 
@@ -22,6 +24,9 @@ public class TestController {
 
 	@Autowired
 	private RestTemplateBuilder restTemplateBuilder;
+	
+	@Autowired
+	private RabbitMQSender rabbitMQSender;
 	
 	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/")
@@ -47,5 +52,15 @@ public class TestController {
 		ResponseEntity<String> response = restTemplate.exchange(baseUrl+"fetchUser", HttpMethod.POST, request, String.class);
 		ResponseEntity<String> response1 = restTemplate.exchange(baseUrl+"/test", HttpMethod.GET, null, String.class);
 		return response.getBody() + response1.getBody() +" footer";
+	}
+	
+	@GetMapping("/placeOrder")
+	public String placeOrder() {
+		Order order = new Order();
+		order.setItemId(101);
+		order.setFirstName("Swastik");
+		order.setLastName("Panda");
+		order.setOrderId(123123897);
+		return rabbitMQSender.send(order);
 	}
 }
