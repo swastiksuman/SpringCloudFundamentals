@@ -30,7 +30,7 @@ public class RabbitMQSender {
 			orderJson = objectMapper.writeValueAsString(order);
 			Message message = MessageBuilder.withBody(orderJson.getBytes())
 					.setContentType(MessageProperties.CONTENT_TYPE_JSON).build();
-			rabbitTemplate.convertAndSend(queueName, message);
+			rabbitTemplate.convertAndSend("om-exchange","routingkey", message);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
