@@ -5,6 +5,7 @@ import org.springframework.amqp.core.Message;
 import org.springframework.amqp.core.MessageBuilder;
 import org.springframework.amqp.core.MessageProperties;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 import com.cloud.fundamentals.clientfirst.model.Order;
@@ -19,6 +20,9 @@ public class RabbitMQSender {
 
 	@Autowired
 	private AmqpTemplate rabbitTemplate;
+	
+	@Value("${service-om.queue}")
+	String queueName;
 
 	public String send(Order order) {
 		String orderJson;
@@ -26,7 +30,7 @@ public class RabbitMQSender {
 			orderJson = objectMapper.writeValueAsString(order);
 			Message message = MessageBuilder.withBody(orderJson.getBytes())
 					.setContentType(MessageProperties.CONTENT_TYPE_JSON).build();
-			rabbitTemplate.convertAndSend(message);
+			rabbitTemplate.convertAndSend(queueName, message);
 		} catch (JsonProcessingException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
