@@ -16,13 +16,26 @@ function App() {
     console.log('***Test***');
   }
 
-  function doTransaction(){
-
+  function placeOrder(){
+    const placeOrder = {
+        firstName: "Soujanya",
+        lastName: "Talla",
+        itemId: "123"
+      };
+    axios.post('http://localhost:8080/placeOrder', placeOrder)
+      .then(response => console.log(response));
   }
+
   return (
     <div className="App">
       <button onClick={() => doTest()}>Test</button>
       <div>{ result }</div>
+      <div>
+        <label>First Name</label><input type="text" />
+        <label>Last Name</label><input type="text" />
+        <label>Item Id</label><input type="text" />
+        <button onClick={()=> placeOrder()}>Submit Order</button>
+      </div>
     </div>
   );
 }
