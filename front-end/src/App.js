@@ -5,6 +5,10 @@ import axios from 'axios';
 function App() {
 
   const [result, setResult] = useState(null);
+  const [firstName, setFirstName] = useState('');
+  const [lastName, setLastName] = useState('');
+  const [itemId, setItemId] = useState('');
+
 
   function doTest(){
     axios.get('http://localhost:8080/doTransaction')
@@ -22,7 +26,11 @@ function App() {
         lastName: "Talla",
         itemId: "123"
       };
-    axios.post('http://localhost:8080/placeOrder', placeOrder)
+    axios.post('http://localhost:8080/placeOrder', {
+      firstName: firstName,
+      lastName: lastName,
+      itemId:  itemId
+    })
       .then(response => console.log(response));
   }
 
@@ -31,9 +39,12 @@ function App() {
       <button onClick={() => doTest()}>Test</button>
       <div>{ result }</div>
       <div>
-        <label>First Name</label><input type="text" />
-        <label>Last Name</label><input type="text" />
-        <label>Item Id</label><input type="text" />
+        <label>First Name</label><input 
+          onChange={(e)=>setFirstName(e.target.value)} type="text" />
+        <label>Last Name</label><input 
+          onChange={(e)=>setLastName(e.target.value)} type="text" />
+        <label>Item Id</label><input 
+          onChange={(e)=>setItemId(e.target.value)} type="text" />
         <button onClick={()=> placeOrder()}>Submit Order</button>
       </div>
     </div>

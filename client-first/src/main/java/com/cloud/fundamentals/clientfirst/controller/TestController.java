@@ -65,6 +65,7 @@ public class TestController {
 		order.setFirstName(placeOrder.getFirstName());
 		order.setLastName(placeOrder.getLastName());
 		order.setOrderId(123123897);
+		System.out.println(order.toString());
 		return rabbitMQSender.send(order);
 	}
 }
