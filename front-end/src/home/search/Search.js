@@ -27,7 +27,22 @@ function Search(){
                     result === null ? (<Col></Col>)
                     :
                     (result.map((r, k) => (
-                        <Col>{r.productName}</Col>
+                        <Col>
+                            <Container>
+                                <Row className="text-center">
+                                    <Col>
+                                    <img src={r.imageUrl}/>
+                                    </Col>
+                                </Row>
+                                <Row className="text-center">
+                                    <Col>
+                                        <label>{r.productName}</label>
+                                    </Col>
+                                </Row>
+                            </Container>
+                            
+
+                        </Col>
                     ))
                     )    
                 }
