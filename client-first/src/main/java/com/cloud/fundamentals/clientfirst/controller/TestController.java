@@ -31,6 +31,9 @@ public class TestController {
 	@Autowired
 	private RabbitMQSender rabbitMQSender;
 	
+	@Autowired
+	private RestTemplate restTemplate;
+	
 	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/")
 	public String testClient() {
@@ -67,5 +70,12 @@ public class TestController {
 		order.setOrderId(123123897);
 		System.out.println(order.toString());
 		return rabbitMQSender.send(order);
+	}
+	
+	@GetMapping("/test")
+	public String testRibbon() {
+		String string = restTemplate.getForObject("http://service-first/test", String.class);
+		System.out.println(string);
+		return string;
 	}
 }
