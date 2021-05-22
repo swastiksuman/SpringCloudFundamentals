@@ -1,4 +1,6 @@
-FROM ubuntu:latest
+FROM openjdk:12-alpine
+LABEL maintainer="swastiksuman@gmail.com"
+VOLUME /tmp
 
 #ENV NODE_VERSION=12.6.0
 #RUN apt install -y curl
@@ -11,20 +13,19 @@ FROM ubuntu:latest
 #RUN node --version
 #RUN npm --version
 
-# JAVA INSTALL
-RUN apt-get -y update
-RUN apt-get -y install openjdk-11-jre-headless
+RUN apk update && apk add bash
+RUN apk add --update nodejs npm
 
-# RABBITMQ INSTALL
-RUN echo "deb http://www.rabbitmq.com/debian/ testing main"  | tee  /etc/apt/sources.list.d/rabbitmq.list > /dev/null
-RUN apt-get install wget -y
-RUN wget https://www.rabbitmq.com/rabbitmq-signing-key-public.asc
-RUN apt-get install gnupg -y
-RUN apt-key add rabbitmq-signing-key-public.asc
-RUN apt-get install rabbitmq-server -y
-RUN service rabbitmq-server start
-RUN rabbitmq-plugins enable rabbitmq_management
-RUN service rabbitmq-server restart
+# Add the testing repository to your Alpine Linux Docker
+RUN echo @testing http://nl.alpinelinux.org/alpine/edge/testing >> /etc/apk/repositories
+# install RabbitMQ from testing branch
+RUN apk add rabbitmq-server@testing
+
+#configure Erlang cookie
+RUN touch /usr/lib/rabbitmq/.erlang.cookie \
+ && echo your-favourite-erlang-cookie > /usr/lib/rabbitmq/.erlang.cookie \
+ && chown rabbitmq:rabbitmq /usr/lib/rabbitmq/.erlang.cookie \
+ && chmod 700 /usr/lib/rabbitmq/.erlang.cookie
 
 EXPOSE 8761
 EXPOSE 8080
