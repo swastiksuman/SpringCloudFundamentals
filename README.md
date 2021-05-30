@@ -18,3 +18,9 @@ server.port=8082
 service.instance.name=service-1
 spring.application.name=service-first
 ```
+
+## Running Docker
+```
+sudo docker build -t testimage .
+sudo docker run -d -p 8761:8761 -p 8081:8081 -p 15672:15672 -p 5672:5672 -p 3000:3000 testimage
+```
