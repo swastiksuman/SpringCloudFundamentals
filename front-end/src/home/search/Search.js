@@ -10,7 +10,7 @@ function Search(){
     const [itemId, setItemId] = useState('');
 
     function doSearch(){
-        axios.get('http://localhost:8081/searchProduct')
+        axios.get('http://localhost:8000/service-first/searchProduct')
             .then(res=>setResult(res.data.searchResult));
     }
 
@@ -20,7 +20,7 @@ function Search(){
             lastName: "Talla",
             itemId: "123"
         };
-        axios.post('http://localhost:8080/placeOrder', {
+        axios.post('http://localhost:8000/client-first/placeOrder', {
             firstName: firstName,
             lastName: lastName,
             itemId: itemId
