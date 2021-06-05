@@ -1,12 +1,19 @@
 package com.cloud.fundamentals.clientfirst.controller;
 
+import java.time.Duration;
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.web.client.RestTemplateBuilder;
+import org.springframework.cloud.circuitbreaker.resilience4j.Resilience4JConfigBuilder;
+import org.springframework.cloud.client.circuitbreaker.CircuitBreakerFactory;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,6 +25,9 @@ import com.cloud.fundamentals.clientfirst.model.PlaceOrder;
 import com.cloud.fundamentals.clientfirst.service.RabbitMQSender;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
+
+import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
+import io.github.resilience4j.timelimiter.TimeLimiterConfig;
 
 @RestController
 public class TestController {
@@ -33,6 +43,9 @@ public class TestController {
 	
 	@Autowired
 	private RestTemplate restTemplate;
+	
+	@Autowired
+	private CircuitBreakerFactory circuitBreakerFactory;
 	
 	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/")
@@ -77,5 +90,17 @@ public class TestController {
 		String string = restTemplate.getForObject("http://service-first/test", String.class);
 		System.out.println(string);
 		return string;
+	}
+	
+	@GetMapping("/delay/{seconds}")
+	public Map testcb(@PathVariable int seconds) {
+		Map<String, String> fall = new HashMap<>();
+		fall.put("hello", "world");
+		return circuitBreakerFactory.create("delay")
+				.run(rabbitMQSender.delaySuppplier(seconds), t -> {
+					Map<String, String> fallback = new HashMap<>();
+					fallback.put("hello", "world");
+					return fallback;
+				});
 	}
 }
