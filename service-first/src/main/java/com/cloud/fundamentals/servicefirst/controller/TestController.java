@@ -1,5 +1,8 @@
 package com.cloud.fundamentals.servicefirst.controller;
 
+import java.time.Duration;
+import java.util.function.Supplier;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.web.client.RestTemplateBuilder;
@@ -18,6 +21,7 @@ import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 
 import io.swagger.annotations.ApiOperation;
+import reactor.core.publisher.Mono;
 
 @RestController
 public class TestController {
@@ -30,9 +34,17 @@ public class TestController {
 	
 	@ApiOperation(value ="Fetch Test Information")
 	@GetMapping("/test")
-	public String doTest() {
-		return "Test Successful for instance: "+ instanceName;
+	public Mono<String> doTest() {
+		Mono<String> monoStream = Mono.delay(Duration.ofMillis(500)).just("Test Successful for instance+: "+instanceName);
+		try {
+			Thread.sleep(3000);
+		} catch (InterruptedException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return monoStream;
 	}
+	
 	
 	@ApiOperation(value="Add a User")
 	@PostMapping("/addUser")

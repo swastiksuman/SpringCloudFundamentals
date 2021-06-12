@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.reactive.function.client.WebClient;
 
 import com.cloud.fundamentals.clientfirst.dto.FetchUserRequestDto;
 import com.cloud.fundamentals.clientfirst.model.Order;
@@ -28,6 +29,7 @@ import com.netflix.discovery.EurekaClient;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
+import reactor.core.publisher.Mono;
 
 @RestController
 public class TestController {
@@ -46,6 +48,8 @@ public class TestController {
 	
 	@Autowired
 	private CircuitBreakerFactory circuitBreakerFactory;
+	
+	WebClient webClient = WebClient.create("http://localhost:8081");
 	
 	@CrossOrigin(origins = "http://localhost:3000")
 	@GetMapping("/")
@@ -87,9 +91,13 @@ public class TestController {
 	
 	@GetMapping("/test")
 	public String testRibbon() {
-		String string = restTemplate.getForObject("http://service-first/test", String.class);
-		System.out.println(string);
-		return string;
+		//String string = restTemplate.getForObject("http://service-first/test", String.class);
+		//System.out.println(string);
+		webClient.get()
+        .uri("/test")
+        .retrieve()
+        .bodyToMono(String.class).subscribe(data -> System.out.println(data));
+		return "";
 	}
 	
 	@GetMapping("/delay/{seconds}")
