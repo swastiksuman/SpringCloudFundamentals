@@ -1,7 +1,9 @@
 package com.cloud.fundamentals.clientfirst.controller;
 
 import java.time.Duration;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,14 +25,42 @@ import org.springframework.web.reactive.function.client.WebClient;
 import com.cloud.fundamentals.clientfirst.dto.FetchUserRequestDto;
 import com.cloud.fundamentals.clientfirst.model.Order;
 import com.cloud.fundamentals.clientfirst.model.PlaceOrder;
+import com.cloud.fundamentals.clientfirst.model.Result;
 import com.cloud.fundamentals.clientfirst.service.RabbitMQSender;
 import com.netflix.appinfo.InstanceInfo;
 import com.netflix.discovery.EurekaClient;
 
 import io.github.resilience4j.circuitbreaker.CircuitBreakerConfig;
 import io.github.resilience4j.timelimiter.TimeLimiterConfig;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+class ReturnMessage {
+	List<String> returnMessages = new ArrayList<String>();
+
+	public List<String> getReturnMessages() {
+		return returnMessages;
+	}
+
+	public void setReturnMessages(List<String> returnMessages) {
+		this.returnMessages = returnMessages;
+	}
+	
+	public void addMessage(String message) {
+		returnMessages.add(message);
+	}
+
+	@Override
+	public String toString() {
+		String returnMessage = null;
+		for(String message: returnMessages) {
+			returnMessage.concat(message);
+		}
+		return "ReturnMessage [returnMessages=" + returnMessage + "]";
+	}
+	
+	
+}
 @RestController
 public class TestController {
 	
@@ -90,14 +120,20 @@ public class TestController {
 	}
 	
 	@GetMapping("/test")
-	public String testRibbon() {
+	public Flux<String> testRibbon() throws InterruptedException {
 		//String string = restTemplate.getForObject("http://service-first/test", String.class);
 		//System.out.println(string);
-		webClient.get()
-        .uri("/test")
+		final Result result = new Result();
+		final ReturnMessage returnMessage = new ReturnMessage();
+		
+		Mono<String> call1 = webClient.get()
+		        .uri("/test")
+		        .retrieve()
+		        .bodyToMono(String.class);
+		Mono<String> call2 = webClient.get().uri("/test")
         .retrieve()
-        .bodyToMono(String.class).subscribe(data -> System.out.println(data));
-		return "";
+        .bodyToMono(String.class);
+		return Flux.merge(call1, call2);
 	}
 	
 	@GetMapping("/delay/{seconds}")
