@@ -10,8 +10,10 @@ function Search(){
     const [itemId, setItemId] = useState('');
 
     function doSearch(){
-        axios.get('http://localhost:8000/service-first/searchProduct')
+        axios.get('http://localhost:8000/service-product/searchProduct')
             .then(res=>setResult(res.data.searchResult));
+        axios.get('http://localhost:8000/service-plan/getPlans')
+            .then(res=>console.log(res));    
     }
 
     function placeOrder() {
