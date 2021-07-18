@@ -1,19 +1,23 @@
 import axios from "axios";
 import { useState } from "react";
 import { Button } from "react-bootstrap";
-import { Col, Container, Row } from "react-bootstrap";
+import { Col, Container, Row, Card } from "react-bootstrap";
 
-function Search(){
+function Search() {
     const [result, setResult] = useState(null);
     const [firstName, setFirstName] = useState('');
     const [lastName, setLastName] = useState('');
     const [itemId, setItemId] = useState('');
+    const [plans, setPlans] = useState(null);
+    const [planName, setPlanName] = useState('');
+    const [planPrice, setPlanPrice] = useState('');
+    const [planData, setPlanData] = useState('');
 
-    function doSearch(){
+    function doSearch() {
         axios.get('http://localhost:8000/service-product/searchProduct')
-            .then(res=>setResult(res.data.searchResult));
+            .then(res => setResult(res.data.searchResult));
         axios.get('http://localhost:8000/service-plan/getPlans')
-            .then(res=>console.log(res));    
+            .then(res => setPlans(res.data.listOfPlans));
     }
 
     function placeOrder() {
@@ -35,7 +39,7 @@ function Search(){
                 <Row>
                     <Col></Col>
                     <Col>
-                        <input type="text"/>
+                        <input type="text" />
                         <Button onClick={doSearch}>Search</Button>
                     </Col>
                     <Col></Col>
@@ -43,29 +47,59 @@ function Search(){
             </Container>
             <Container>
                 <Row>
-                {
-                    result === null ? (<Col></Col>)
-                    :
-                    (result.map((r, k) => (
-                        <Col>
-                            <Container>
-                                <Row className="text-center">
-                                    <Col>
-                                    <img src={r.imageUrl}/>
-                                    </Col>
-                                </Row>
-                                <Row className="text-center">
-                                    <Col>
-                                        <label>{r.productName}</label>
-                                    </Col>
-                                </Row>
-                            </Container>
-                            
+                    {
+                        result === null ? (<Col></Col>)
+                            :
+                            (result.map((r, k) => (
+                                <Col>
+                                    <Container>
+                                        <Row className="text-center">
+                                            <Col>
+                                                <img src={r.imageUrl} />
+                                            </Col>
+                                        </Row>
+                                        <Row className="text-center">
+                                            <Col>
+                                                <label>{r.productName}</label>
+                                            </Col>
+                                        </Row>
+                                    </Container>
 
-                        </Col>
-                    ))
-                    )    
-                }
+
+                                </Col>
+                            ))
+                            )
+                    }
+                </Row>
+                <Row>
+                    {
+                        plans === null ? (<Col></Col>)
+                            :
+                            (plans.map((p, k) => (
+                                <Col>
+                                    <Container>
+                                        <Row className="text-center">
+                                            <Col>
+                                                <Card style={{ width: '18rem' }}>
+                                                    
+                                                    <Card.Body>
+                                                        <Card.Title>{p.planName}</Card.Title>
+                                                        <Card.Text>
+                                                            Pay {p.price} for {p.planName} plan per month. Data allowance {p.data} MB.
+    </Card.Text>
+                                                        <Button variant="primary">Select</Button>
+                                                    </Card.Body>
+                                                </Card>
+                                                <label>{p.planName}</label>
+                                            </Col>
+                                        </Row>
+                                    </Container>
+
+
+                                </Col>
+                            ))
+                            )
+                    }
                 </Row>
             </Container>
             <div>

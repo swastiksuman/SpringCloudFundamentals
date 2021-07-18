@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.cloud.fundamentals.dto.PlanSearchResponseDTO;
 import com.cloud.fundamentals.serviceplans.service.PlanService;
 import com.cloud.fundamentals.vo.PlanVO;
 
@@ -16,7 +17,7 @@ public class PlanController {
 	private PlanService planService;
 
 	@GetMapping("/getPlans")
-	public List<PlanVO> getPlans() {
-		return planService.getPlans();
+	public PlanSearchResponseDTO getPlans() {
+		return new PlanSearchResponseDTO(planService.getPlans());
 	}
 }
