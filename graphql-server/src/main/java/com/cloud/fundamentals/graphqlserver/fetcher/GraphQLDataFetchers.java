@@ -13,30 +13,27 @@ import graphql.schema.DataFetcher;
 @Component
 public class GraphQLDataFetchers {
 
-	private static List<Map<String, String>> books = Arrays.asList(
-			ImmutableMap.of("id", "book-1", "name", "Harry Potter and the Philosopher's Stone", "pageCount", "223",
-					"authorId", "author-1"),
-			ImmutableMap.of("id", "book-2", "name", "Moby Dick", "pageCount", "635", "authorId", "author-2"),
-			ImmutableMap.of("id", "book-3", "name", "Interview with the vampire", "pageCount", "371", "authorId",
-					"author-3"));
+	private static List<Map<String, String>> plans = Arrays.asList(
+			ImmutableMap.of("planName", "basic", "price", "100.0", "data", "0"),
+			ImmutableMap.of("planName", "gold", "price", "200.0", "data", "1024"),
+			ImmutableMap.of("planName", "platinum", "price", "300.0", "data", "2048"));
 
-	private static List<Map<String, String>> authors = Arrays.asList(
-			ImmutableMap.of("id", "author-1", "firstName", "Joanne", "lastName", "Rowling"),
-			ImmutableMap.of("id", "author-2", "firstName", "Herman", "lastName", "Melville"),
-			ImmutableMap.of("id", "author-3", "firstName", "Anne", "lastName", "Rice"));
+	private static List<Map<String, String>> products = Arrays.asList(
+			ImmutableMap.of("productId", "author-1", "productName", "Joanne", "imageUrl", "Rowling"),
+			ImmutableMap.of("productId", "author-2", "productName", "Herman", "imageUrl", "Melville"),
+			ImmutableMap.of("productId", "author-3", "productName", "Anne", "imageUrl", "Rice"));
 
-	public DataFetcher getBookByIdDataFetcher() {
+	public DataFetcher getPlanByNameDataFetcher() {
 		return dataFetchingEnvironment -> {
-			String bookId = dataFetchingEnvironment.getArgument("id");
-			return books.stream().filter(book -> book.get("id").equals(bookId)).findFirst().orElse(null);
+			String planName = dataFetchingEnvironment.getArgument("id");
+			return plans.stream().filter(plan -> plan.get("planName").equals(planName)).findFirst().orElse(null);
 		};
 	}
 
-	public DataFetcher getAuthorDataFetcher() {
+	public DataFetcher getProductByIdDataFetcher() {
 		return dataFetchingEnvironment -> {
-			Map<String, String> book = dataFetchingEnvironment.getSource();
-			String authorId = book.get("authorId");
-			return authors.stream().filter(author -> author.get("id").equals(authorId)).findFirst().orElse(null);
+			String productId = dataFetchingEnvironment.getArgument("productId");
+			return products.stream().filter(author -> author.get("productId").equals(productId)).findFirst().orElse(null);
 		};
 	}
 }
