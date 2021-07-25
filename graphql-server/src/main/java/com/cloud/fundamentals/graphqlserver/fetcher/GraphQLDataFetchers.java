@@ -19,9 +19,9 @@ public class GraphQLDataFetchers {
 			ImmutableMap.of("planName", "platinum", "price", "300.0", "data", "2048"));
 
 	private static List<Map<String, String>> products = Arrays.asList(
-			ImmutableMap.of("productId", "author-1", "productName", "Joanne", "imageUrl", "Rowling"),
-			ImmutableMap.of("productId", "author-2", "productName", "Herman", "imageUrl", "Melville"),
-			ImmutableMap.of("productId", "author-3", "productName", "Anne", "imageUrl", "Rice"));
+			ImmutableMap.of("productId", "101", "productName", "iPhone12", "imageUrl", "https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-12.jpg"),
+			ImmutableMap.of("productId", "102", "productName", "Samsung S10 Lite", "imageUrl", "https://fdn2.gsmarena.com/vv/bigpic/sasmung-galaxy-s10-lite-.jpg"),
+			ImmutableMap.of("productId", "103", "productName", "Mi 10 5G", "imageUrl", "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-mi-10-5g.jpg"));
 
 	public DataFetcher getPlanByNameDataFetcher() {
 		return dataFetchingEnvironment -> {

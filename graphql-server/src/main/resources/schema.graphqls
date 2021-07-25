@@ -7,3 +7,14 @@ type Plan {
   price: String
   data: String
 }
+
+
+extend type Query {
+	productById(productId: ID): Product
+}
+
+type Product {
+	productId: ID
+	productName: String
+	imageUrl: String
+}
