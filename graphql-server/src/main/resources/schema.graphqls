@@ -1,20 +1,15 @@
-type Query {
-  planByName(id: ID): Plan 
-}
-
 type Plan {
   planName: ID
   price: String
   data: String
 }
 
-
-extend type Query {
-	productById(productId: ID): Product
-}
-
 type Product {
 	productId: ID
 	productName: String
 	imageUrl: String
+}
+
+type Query {
+	firstQuery : String
 }
