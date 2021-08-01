@@ -16,12 +16,12 @@ import graphql.schema.DataFetcher;
 @Component
 public class GraphQLDataFetchers {
 
-	private static List<Map<String, String>> plans = Arrays.asList(
+	public static List<Map<String, String>> plans = Arrays.asList(
 			ImmutableMap.of("planName", "basic", "price", "100.0", "data", "0"),
 			ImmutableMap.of("planName", "gold", "price", "200.0", "data", "1024"),
 			ImmutableMap.of("planName", "platinum", "price", "300.0", "data", "2048"));
 
-	private static List<Map<String, String>> products = Arrays.asList(
+	public static List<Map<String, String>> products = Arrays.asList(
 			ImmutableMap.of("productId", "101", "productName", "iPhone12", "imageUrl", "https://fdn2.gsmarena.com/vv/bigpic/apple-iphone-12.jpg"),
 			ImmutableMap.of("productId", "102", "productName", "Samsung S10 Lite", "imageUrl", "https://fdn2.gsmarena.com/vv/bigpic/sasmung-galaxy-s10-lite-.jpg"),
 			ImmutableMap.of("productId", "103", "productName", "Mi 10 5G", "imageUrl", "https://fdn2.gsmarena.com/vv/bigpic/xiaomi-mi-10-5g.jpg"));

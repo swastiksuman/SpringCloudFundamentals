@@ -2,13 +2,14 @@ package com.cloud.fundamentals.graphqlserver.vo;
 
 public class PlanVO {
 	private String planName;
-	private double price;
-	private int data;
-	
+	private String price;
+	private String data;
+
 	public PlanVO() {
-		
+
 	}
-	public PlanVO(String planName, double price, int data) {
+
+	public PlanVO(String planName, String price, String data) {
 		super();
 		this.planName = planName;
 		this.price = price;
@@ -23,20 +24,25 @@ public class PlanVO {
 		this.planName = planName;
 	}
 
-	public double getPrice() {
+	public String getPrice() {
 		return price;
 	}
 
-	public void setPrice(double price) {
+	public void setPrice(String price) {
 		this.price = price;
 	}
 
-	public int getData() {
+	public String getData() {
 		return data;
 	}
 
-	public void setData(int data) {
+	public void setData(String data) {
 		this.data = data;
+	}
+
+	@Override
+	public String toString() {
+		return "PlanVO [planName=" + planName + ", price=" + price + ", data=" + data + "]";
 	}
 
 }

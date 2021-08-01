@@ -1,5 +1,10 @@
+type Query {
+	firstQuery : String
+	plan(planName : String) : Plan
+}
+
 type Plan {
-  planName: ID
+  planName: String
   price: String
   data: String
 }
@@ -8,8 +13,4 @@ type Product {
 	productId: ID
 	productName: String
 	imageUrl: String
-}
-
-type Query {
-	firstQuery : String
 }
