@@ -1,6 +1,8 @@
 type Query {
 	firstQuery : String
 	plan(planName : String) : Plan
+	product(productId: String) : Product
+	plans : String
 }
 
 type Plan {
@@ -10,7 +12,7 @@ type Plan {
 }
 
 type Product {
-	productId: ID
+	productId: String
 	productName: String
 	imageUrl: String
 }
