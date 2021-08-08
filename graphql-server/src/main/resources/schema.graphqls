@@ -2,7 +2,7 @@ type Query {
 	firstQuery : String
 	plan(planName : String) : Plan
 	product(productId: String) : Product
-	plans : String
+	plans : [Plan!]!
 }
 
 type Plan {

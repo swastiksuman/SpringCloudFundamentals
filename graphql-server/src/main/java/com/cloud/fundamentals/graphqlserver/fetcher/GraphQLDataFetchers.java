@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
 
-import com.cloud.fundamentals.graphqlserver.dto.PlanSearchResponseDTO;
 import com.google.common.collect.ImmutableMap;
 
 import graphql.schema.DataFetcher;
