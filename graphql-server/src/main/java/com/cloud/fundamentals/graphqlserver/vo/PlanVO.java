@@ -15,6 +15,7 @@ public class PlanVO {
 		this.price = price;
 		this.data = data;
 	}
+	
 
 	public String getPlanName() {
 		return planName;

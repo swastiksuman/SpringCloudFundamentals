@@ -8,7 +8,6 @@ import java.util.stream.Collectors;
 import org.springframework.stereotype.Component;
 
 import com.cloud.fundamentals.graphqlserver.fetcher.GraphQLDataFetchers;
-import com.cloud.fundamentals.graphqlserver.vo.Plan;
 import com.cloud.fundamentals.graphqlserver.vo.PlanVO;
 import com.cloud.fundamentals.graphqlserver.vo.ProductVO;
 import com.coxautodev.graphql.tools.GraphQLQueryResolver;
@@ -34,13 +33,17 @@ public class Query implements GraphQLQueryResolver {
 	}
 
 	public List<PlanVO> getPlans() {
-		List<Map<String, String>> plans = GraphQLDataFetchers.plans.stream().collect(Collectors.toList());
-		PlanVO plan1 = new PlanVO();
-		plan1.setPlanName("A");
-		plan1.setPrice("100.0");
-		plan1.setData("20");
-		List<PlanVO> ps = new ArrayList<>();
-		ps.add(plan1);
-		return ps;
+		List<PlanVO> plans = new ArrayList<PlanVO>();
+		GraphQLDataFetchers.plans.stream().forEach((plan) -> {
+			plans.add(new PlanVO(plan.get("planName"), plan.get("price"), plan.get("data")));
+		});
+		return plans;
+	}
+	public List<ProductVO> getProducts() {
+		List<ProductVO> products = new ArrayList<ProductVO>();
+		GraphQLDataFetchers.products.stream().forEach((product) -> {
+			products.add(new ProductVO(product.get("productId"), product.get("productName"), product.get("imageUrl")));
+		});
+		return products;
 	}
 }

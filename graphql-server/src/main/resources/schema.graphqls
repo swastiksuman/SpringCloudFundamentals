@@ -3,6 +3,7 @@ type Query {
 	plan(planName : String) : Plan
 	product(productId: String) : Product
 	plans : [Plan!]!
+	products : [Product!]!
 }
 
 type Plan {
